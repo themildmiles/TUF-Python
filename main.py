@@ -33,7 +33,15 @@ class LoginState:
 
                 self.status.set(f"Success! Welcome, {ImportantData.USERNAME}")
                 user_data = json.loads(requests.get("https://api.tuforums.com/v2/auth/profile/me", headers={"Authorization": f"Bearer {ImportantData.USERTOKEN}"}).content.decode())
-                # self.root.quit()
+                self.root.quit()
+                
+                ImportantData.NICKNAME = user_data["nickname"]
+                ImportantData.EMAIL = user_data["email"]
+                ImportantData.AVATARURL = user_data["avatarUrl"]
+                ImportantData.PLAYERID = user_data["playerId"]
+                ImportantData.COUNTRY = user_data["player"]["country"]
+
+                MainState()
             
             case 400:
                 self.status.set("Error: Wrong login info provided?")
@@ -88,5 +96,9 @@ class LoginState:
         # root.bind("<Return>", calculate)
 
         root.mainloop()
+
+class MainState:
+    def __init__(self):
+        self.root = root = Tk()
 
 LoginState()
