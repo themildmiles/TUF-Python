@@ -110,7 +110,18 @@ class LoginState:
         root.mainloop()
 
 class WIPState:
+    currentState = None
+    def destroy(self):
+        self.root.destroy()
+        WIPState.currentState = None
+    
     def __init__(self):
+        if WIPState.currentState is not None:
+            print("ERROR: A WIPState already exists.")
+            return
+        
+        WIPState.currentState = self
+        
         self.root = root = Tk()
         root.title("In progress...")
 
@@ -120,7 +131,7 @@ class WIPState:
         root.rowconfigure(0, weight=1)
 
         ttk.Label(mainframe, text="Working in progress! Please wait for future updates.").grid(column=1, row=1, sticky=W)
-        ttk.Button(mainframe, text="OK", command=self.root.destroy).grid(column=2, row=2, sticky=W)
+        ttk.Button(mainframe, text="OK", command=self.destroy).grid(column=2, row=2, sticky=W)
 
         self.root.mainloop()
         
